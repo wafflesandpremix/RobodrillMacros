@@ -1,0 +1,97 @@
+%
+O9744(REN*FCS*TO*WCS)
+(COPYRIGHT*1990-2025*RENISHAW*PLC.*ALL*RIGHTS*RESERVED)
+(************************) 
+#30=#0(MACHINE ROTARY AXIS CONFIGURATION)
+(EXAMPLE 23=B+C) 
+(FIRST AXIS+SECOND AXIS) 
+(FIRST AXIS A=1 B=2 C=3) 
+(SECOND AXIS A=1 B=2 C=3)
+(RESTRICTIONS) 
+(THE TILTED WORKING PLANE SHOULD HAVE BEEN SETUP BEFORE CALLING THIS MACRO)
+(AND THE SPINDLE IS IN A SAFE POSITION TO MOVE WITHIN A SPHERE OF RADIUS #24)
+(************************) 
+#31=0
+#32=4
+#33=5
+(IDENTITY*TEST*MOVE) 
+#24=1.(IDENTITY*MOVE*DISTANCE*IN*MM) 
+#25=1000.(IDENTITY*MOVE*FEEDRATE*MM/MIN) 
+G65P9724 
+#24=[#24*#129] 
+#25=[#25*#129] 
+M98P9723 
+#1=#5041 
+#2=#5042 
+#3=#5043 
+#4=#5021 
+#5=#5022 
+#6=#5023 
+G01X[#1+#24]F#25 
+G09
+M98P9723 
+#7=#5021 
+#8=#5022 
+#9=#5023 
+#10=[#7-#4]/#24
+#11=[#8-#5]/#24
+#12=[#9-#6]/#24
+G01X#1F#25 
+G09
+G01Y[#2+#24]F#25 
+G09
+M98P9723 
+#7=#5021 
+#8=#5022 
+#9=#5023 
+#13=[#7-#4]/#24
+#14=[#8-#5]/#24
+#15=[#9-#6]/#24
+G01Y#2F#25 
+G09
+(ZI=XJ*YK   XK*YJ) 
+(ZJ=XK*YI   XI*YK) 
+(ZK=XI*YJ   XJ*YI) 
+#16=[#11*#15]-[#12*#14]
+#17=[#12*#13]-[#10*#15]
+#18=[#10*#14]-[#11*#13]
+M98P9723 
+(************************) 
+N30
+(FCS*TO*WCS*CALC)
+(ONLY SET WCS FOR TABLE TYPE ROTARY AXIS)
+(ALL TOOL TYPE ROTARY AXIS = 0)
+#1=0 
+#2=0 
+#3=0 
+IF[#31EQ0]GOTO31 
+#1=#[5040+#31] 
+N31
+IF[#32EQ0]GOTO32 
+#2=-#[5040+#32]
+N32
+IF[#33EQ0]GOTO33 
+#3=#[5040+#33] 
+N33
+#20=[#151*#10]+[#152*#13]+[#153*#16] 
+#21=[#151*#11]+[#152*#14]+[#153*#17] 
+#22=[#151*#12]+[#152*#15]+[#153*#18] 
+#4=COS[#1] 
+#5=SIN[#1] 
+#6=COS[#2] 
+#7=SIN[#2] 
+#8=COS[#3] 
+#9=SIN[#3] 
+M98P9723 
+#140=[#20*#6*#8]+[#21*[-[#4*#9]+[#5*#7*#8]]]+[#22*[[#5*#9]+[#4*#7*#8]]]
+#141=[#20*#6*#9]+[#21*[#4*#8]+[#5*#7*#9]]+[#22*[-[#5*#8]+[#4*#7*#9]]]
+#142=[#20*[-[#7]]]+[#21*[#5*#6]]+[#22*[#4*#6]] 
+M98P9723 
+(************************) 
+N40
+(EXIT) 
+M99
+ 
+ 
+ 
+%
