@@ -9,12 +9,11 @@ G53 G00 Z0.
 
 #600 = ? (T# youre loading)
 #601 = 0. (diameter of tool in inches)
-#602 = 0. (used for tool loading. Ignore)
 
-M98 P1126
+M98 P1126 (positions tool pocket for loading)
 
 G65 P9857 B1. R[#601] (automatic tool setting macro)
-(home table centered on door)
+
 M5
 G53 G00 Z0.
 G49
