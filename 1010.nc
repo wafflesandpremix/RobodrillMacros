@@ -9,12 +9,13 @@ G53 G00 Z0.
 
 #600 = ? (T# youre loading)
 #601 = ? (diameter of tool in inches)
-#602 = 0. (used for tool loading. Ignore)
 
 M98 P1126
 
 G65 P9857 B3. R[#601] (automatic tool setting macro)
-(home table centered on door)
+
+#[13000 + #600] = #[13000 + #600] - [#601/2.] (adjust diameter for wear comp)
+
 M5
 G53 G00 Z0.
 G49
